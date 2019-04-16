@@ -27,9 +27,9 @@ function get_yahoo () {
                    printf "${CYAN}$aa [STATUS] > ${NORMAL}$get_yahoo\n"
 }
 function hey_kamu () {
-	               echo -e -n $RED'[?]'${NORMAL}'Token : ' 
-	               read t0k3n
-	               echo "loading."
+	           echo -e -n $RED'[?]'${NORMAL}'Token : ' 
+	           read t0k3n
+	           echo "loading."
                    sleep 1
                    echo "loading.."
                    sleep 1
@@ -49,7 +49,7 @@ function hey_kamu () {
                    printf "$gEt\n" >> $name
                    echo -e -n $RED'[?]'$NORMAL'List here : '; read i
                    for aa in `cat $i`; do
-                   	  get_yahoo
+                   	 get_yahoo
                    done
 }
 hey_kamu %20
