@@ -16,7 +16,7 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
 CYAN=$(tput setaf 6)
-time=$(set `date` && echo -e "$5");
+ti=$(set `date` && echo -e "$5");
 function banner () {
 printf "
 \t$GREEN.__                   
@@ -49,4 +49,4 @@ function hey_kamu () {
 
 }
 hey_kamu 
-echo "selesai pada jam : $time"
+echo "selesai pada jam : $ti"
