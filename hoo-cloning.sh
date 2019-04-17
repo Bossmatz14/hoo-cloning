@@ -39,8 +39,8 @@ function hey_kamu () {
 	               echo -e -n $RED'[?]'${NORMAL}'Token : ' 
 	               read t0k3n
 	               echo "tunggu bentar.."
-                   gEt=$(curl -Gs "https://graph.facebook.com/v3.2/me/friends/?fields=email&access_token=`cat $t0k3n`&limit=299" | jq -r .data | 
-                   grep -Po '(?<="email":)[^,]*' | tr -d '""')
+                       gEt=$(curl -Gs "https://graph.facebook.com/v3.2/me/friends/?fields=email&access_token=`cat $t0k3n`&limit=299" | jq -r .data | 
+                       grep -Po '(?<="email":)[^,]*' | tr -d '""')
                    for aa in $gEt; do
                        startline=1 ###
                        endline="12" ###
