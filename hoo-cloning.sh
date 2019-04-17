@@ -12,7 +12,6 @@ else
 	apt install grep && apt install jq
 	printf "selesai terinstall.\n"
 fi
-return
 GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
