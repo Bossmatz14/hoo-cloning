@@ -16,7 +16,7 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
 CYAN=$(tput setaf 6)
-ti=$(set `date` && echo -e "$5");
+ti=$(set `date` && echo -e "$4");
 function banner () {
 printf "
 \t$GREEN.__                   
