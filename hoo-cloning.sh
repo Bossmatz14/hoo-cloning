@@ -1,9 +1,18 @@
 #!/bin/bash
 # -(c) zsecc0de-crew.id ~ widhisec
 # -createon   : 16/04/2019
+# -lastupdate : 17/04/2019
 # -toolsname  : hoo cloning
 clear;
 command -v curl > /dev/null 2>&1 || { echo >&2 "cURL not installed [!]"; }
+if [[ ! -z $(command -v jq) ]]; then
+	printf ""
+else
+	sleep 2
+	apt install grep && apt install jq
+	printf "selesai terinstall.\n"
+fi
+return
 GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
