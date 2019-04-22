@@ -53,7 +53,7 @@ function hey_kamu () {
                     endline="$threads"
                     counter=0
                     default_threads="10"
-                    threads="${15:-${default_threads}}"
+                    threads="${3:-${default_threads}}"
                     token=$(($counter+1))
                     let token++
                     let counter++
