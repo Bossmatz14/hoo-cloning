@@ -59,7 +59,7 @@ function hey_kamu () {
                     let counter++
                     let startline+=$threads
                     let endline+=$threads
-                    get_yahoo &
+                    get_yahoo & "$aa"
                     done
                     wait
 
