@@ -1,5 +1,5 @@
 # hoo-cloning
-selamat mencoba gan hehehe :)
+THIS SCRIPT DEAD BRO.
 ```
 apt install git && apt install grep
 git clone https://github.com/widhisec/hoo-cloning
